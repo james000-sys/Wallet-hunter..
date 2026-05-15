@@ -1,0 +1,23 @@
+name: Wallet Hunter
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *'   # Runs daily at midnight (optional)
+  workflow_dispatch:      # Allows manual run
+
+jobs:
+  hunt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120  # 2 hours is more than enough for all seeds
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run full wallet scan
+        run: python main.py
